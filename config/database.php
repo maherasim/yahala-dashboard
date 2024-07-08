@@ -51,7 +51,7 @@ return [
             'username' => env('MONGO_DB_USERNAME'),
             'password' => env('MONGO_DB_PASSWORD'),
             'options' => [
-                'database' => 'admin_yekbun' // sets the authentication database required by mongo 3
+                'database' => 'yekbun' // sets the authentication database required by mongo 3
             ]
         ],
 
