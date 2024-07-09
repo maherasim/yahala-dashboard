@@ -136,58 +136,74 @@ $configData = Helper::appClasses();
           <div>Flagged User</div>
         </a>
       </li>
-    <li class="menu-item ">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-file"></i>
-        <div>Channel</div>
+      
+</li>
+{{-- Channel --}}
+<li class="menu-item {{ Request::is('Channels/') ? 'active open' : '' }} {{ Request::is('channelrequest') ? 'active open' : '' }} {{ Request::is('managechannel') ? 'active open' : '' }} {{ Request::is('settings/') ? 'active open' : '' }} {{ Request::is('channels/reason') ? 'active open' : '' }} {{ Request::is('channels/prefix') ? 'active open' : '' }} {{ Request::is('channels/policy_terms') ? 'active open' : '' }} {{ Request::is('channeladmin') ? 'active open' : '' }} {{ Request::is('addmanagechannel') ? 'active open' : '' }}">
+  <a href="javascript:void(0);" class="menu-link menu-toggle">
+    <i class="menu-icon tf-icons bx bx-file"></i>
+    <div>Channels</div>
+  </a>
+  <ul class="menu-sub">
+  
+   <li class="menu-item {{ Request::is('managecategories') ? 'active ' : '' }}">
+      <a href="{{url('managecategories')}}" class="menu-link">
+        <div>Manage Categories</div>
+      </a>
+    </li>
+   <li class="menu-item {{ Request::is('channelrequest') ? 'active ' : '' }}">
+      <a href="{{url('channelrequest?view=new_request')}}" class="menu-link">
+        <div>Channel Request</div>
+      </a>
+    </li>
+  <li class="menu-item {{ Request::is('managechannel') ? 'active ' : '' }}">
+      <a href="{{url('managechannel?view=new_request')}}" class="menu-link">
+        <div>Manage Channel</div>
+      </a>
+    </li>
+    <li class="menu-item {{ Request::is('channeladmin') ? 'active ' : '' }}">
+      <a href="{{url('channeladmin')}}" class="menu-link">
+        <div>Channel Admin</div>
+      </a>
+    </li>
+    <li class="menu-item {{ Request::is('settings/*') ? 'active open' : '' }} {{ Request::is('channels/reason') ? 'active open' : '' }} {{ Request::is('channels/prefix') ? 'active open' : '' }} {{ Request::is('channels/policy_terms') ? 'active open' : '' }}">
+      <a href="javascript:void(0)" class="menu-link menu-toggle">
+        <div>Settings</div>
       </a>
       <ul class="menu-sub">
-        <li class="menu-item ">
-          <a href="javascript:void(0)" class="menu-link">
-            <div>Add/Manage Categories</div>
+        <li class="menu-item {{ Request::is('channels/reason') ? 'active' : '' }}">
+          <a href="{{url('channels/reason')}}" class="menu-link">
+            <div>Reasons</div>
           </a>
         </li>
-        <li class="menu-item ">
-          <a href="javascript:void(0)" class="menu-link">
-            <div>FanPage Request</div>
+        {{-- <li class="menu-item {{ Request::is('channels/prefix') ? 'active' : '' }}">
+          <a href="{{url('channels/prefix')}}" class="menu-link">
+            <div>Prefix</div>
+          </a>
+        </li> --}}
+        <li class="menu-item {{ Request::is('channels/policy_terms') ? 'active' : '' }}">
+          <a href="{{url('channels/policy_terms')}}" class="menu-link">
+            <div>Channels Policy </div>
           </a>
         </li>
-        <li class="menu-item ">
-          <a href="javascript:void(0)" class="menu-link">
-            <div>Manage Fanpage</div>
-          </a>
-        </li>
-        <li class="menu-item ">
-          <a href="javascript:void(0)" class="menu-link">
-            <div>FanPage Admin</div>
-          </a>
-        </li>
-        <li class="menu-item ">
-          <a href="javascript:void(0)" class="menu-link menu-toggle">
-            <div>Settings</div>
-          </a>
-          <ul class="menu-sub">
-            <li class="menu-item ">
-              <a href="javascript:void(0)" class="menu-link">
-                <div>Reasons</div>
-              </a>
-            </li>
-            <li class="menu-item ">
-              <a href="javascript:void(0)" class="menu-link">
-                <div>Policy and Terms</div>
-              </a>
-            </li>
-          </ul>
-        </li>
+
       </ul>
     </li>
+  </ul>
 </li>
+
 <li class="menu-item {{ Request::is('flaggedfanpage') ? 'active ' : '' }}">
 <a href="{{url('/flaggedfanpage')}}" class="menu-link">
 <i class="menu-icon tf-icons bx bx-flag"></i>
 <div>Flagged Channels</div>
 </a>
+
+
+
+
 </li>
+
+
     <li class="menu-header small text-uppercase">
       <span class="menu-header-text">E-Commerce</span>
     </li>
@@ -1250,40 +1266,25 @@ $configData = Helper::appClasses();
 
 
 
-    <li class="menu-item {{ Request::is('donations/*') ? 'active open' : '' }} {{ Request::is('donations') ? 'active open' : '' }}{{ Request::is('settings/donation/*') ? 'active open' : '' }}">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-donate-heart"></i>
-        <div>Donation</div>
+  {{-- Docation --}}
+<li class="menu-item {{ Request::is('donations/') ? 'active open' : '' }} {{ Request::is('donations') ? 'active open' : '' }}{{ Request::is('settings/donation/') ? 'active open' : '' }}">
+  <a href="javascript:void(0);" class="menu-link menu-toggle">
+    <i class="menu-icon tf-icons bx bx-donate-heart"></i>
+    <div>Donation</div>
+  </a>
+  <ul class="menu-sub">
+    <li class="menu-item {{ Request::is('donations/organizations') ? 'active' : '' }}">
+      <a href="{{url('donations/organizations')}}" class="menu-link">
+        <div>Add Manage Organization</div>
       </a>
-
-
-      <ul class="menu-sub">
-
-
-
-        <li class="menu-item {{ Request::is('donations') ? 'active' : '' }}">
-          <a href="{{url('/donations')}}" class="menu-link">
-            <div>Add Manage Donation</div>
-          </a>
-
-
-        </li>
-
-
-
-        <li class="menu-item {{ Request::is('donations/organizations') ? 'active' : '' }}">
-          <a href="{{url('/donations/organizations')}}" class="menu-link">
-            <div>Add Manage Organization</div>
-          </a>
-
-
-        </li>
-      </ul>
     </li>
-
-
-
-
+    <li class="menu-item {{ Request::is('donations') ? 'active' : '' }}">
+      <a href="{{url('donations')}}" class="menu-link">
+        <div>Add Manage Donation</div>
+      </a>
+    </li>
+  </ul>
+    </li>
 
 
 

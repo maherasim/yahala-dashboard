@@ -2,42 +2,20 @@
 
 namespace App\Models;
 
-use Spatie\Activitylog\LogOptions;
-use Jenssegers\Mongodb\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Channel extends Model
 {
+    use HasFactory;
     protected $connection = 'mongodb';
-    use HasFactory, LogsActivity;
+    protected $collection = 'channels';
 
-    protected $fillable=[
-        'name',
-        'country_id',
-        'status',
-        'gender',
-        'image'
-    ];
+    public $timestamps = true;
 
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults();
+    protected $fillable = ['_id','channel_title', 'banner'];
+    public function subcategories() {
+        return $this->hasMany(ChannelSubcategory::class, 'category_id', '_id');
     }
-public function music(){
-    return $this->hasMany(Music::class, 'artists_id', '_id');
-}
-public function banner(){
-    return $this->hasMany(Banner::class, 'artists_id', '_id');
-}
-
-public function video_clips(){
-    return $this->hasMany(VideoClip::class, 'artists_id', '_id');
-}
-
- public function country(){
-    return $this->belongsTo(Country::class);
- }
-
 
 }

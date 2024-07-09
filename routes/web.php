@@ -6,14 +6,20 @@ use App\Http\Controllers\Admin\WizardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\Diamond;
 use App\Http\Controllers\user\Premium;
+use App\Http\Controllers\Admin\Donation\DonationController as DonationDonationController;
+
 use App\Http\Controllers\user\Standard;
 use App\Http\Controllers\fanpage\FanPage;
 use App\Http\Controllers\AppInfoController;
 
 use App\Http\Controllers\BannerController;
+ use App\Http\Controllers\Admin\ChannelReasonController; 
+use App\Http\Controllers\Admin\ChannelPolicyController;
+use App\Http\Controllers\DonationOrganizationController;
 
 use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\ChannelCategoryController;
 use App\Http\Controllers\Admin\AlbumController;
 
 use App\Http\Controllers\Admin\EventController;
@@ -28,7 +34,7 @@ use App\Http\Controllers\Admin\TicketController;
 use App\Http\Controllers\Admin\VotingController;
 
 use App\Http\Controllers\Admin\HistoryController;
-use App\Http\Controllers\Admin\CategoryController;
+ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DonationController;
 
 use App\Http\Controllers\Admin\DiamondUserController;
@@ -61,6 +67,7 @@ use App\Http\Controllers\Admin\PaymentOfficeController;
 use App\Http\Controllers\Admin\Settings\PaymentMethodController;
 use App\Http\Controllers\Admin\Settings\PricingController;
 use App\Http\Controllers\Admin\Settings\SettingController;
+ 
 use App\Http\Controllers\Admin\Settings\UserRolesController;
 use App\Http\Controllers\Admin\PolicyAndTermsController;
 use App\Http\Controllers\Admin\Settings\CityController;
@@ -94,6 +101,7 @@ use App\Http\Controllers\Admin\liveStream\livestreamController;
 use App\Http\Controllers\Admin\Settings\RingtoneController;
 use App\Http\Controllers\BackgroundFeedController;
 use App\Http\Controllers\DepartmentController;
+ 
 use App\Models\FanPageType;
 use App\Models\Story;
 use Illuminate\Support\Facades\Artisan;
@@ -283,6 +291,7 @@ Route::post('/languages/keyword/section/setting', [LanguageController::class, 's
     Route::get('/movie/setting/prefix', [UploadMovieController::class, 'prefix'])->name('movie.setting.prefix');
     Route::get('prefix', [PrefixController::class, 'index'])->name('prefix');
     Route::post('prefix', [PrefixController::class, 'store'])->name('prefix');
+    Route::get('/destroy_policy_desc/{id}',  [ChannelPolicyController::class, 'destroy_desc'])->name('destroy.desc');
 
     Route::get('/prefix', [ReportVideoController::class, 'prefix']);
     Route::prefix('series')
@@ -450,7 +459,63 @@ Route::post('/languages/keyword/section/setting', [LanguageController::class, 's
             );
             Route::get('/categories', [CategoryController::class, 'index'])->name('organizations.categories.index');
         });
+    // Donation
     Route::resource('/donations', DonationController::class);
+    Route::post('/add_donation', [DonationController::class, 'add_donation'])->name('create.donation');
+    Route::put('/edit_donation/{id}', [DonationController::class, 'edit_donation'])->name('edit.donation');
+    Route::delete('/destroy_donation/{id}', [DonationController::class, 'destroy_donation'])->name('destroy.donation');
+ 
+    //Organization
+    Route::post('/add_organization', [App\Http\Controllers\Admin\Donation\OrganizationController::class, 'add_organization'])->name('add.organization');
+    Route::delete('/delete_organization/{id}', [App\Http\Controllers\Admin\Donation\OrganizationController::class, 'organization_destroy'])->name('organization.destroy');
+    Route::put('/organization_update/{id}', [App\Http\Controllers\Admin\Donation\OrganizationController::class, 'organization_update'])->name('organization.update');
+    
+   // Channel Policy 
+   Route::post('/add_channel_policy',[ChannelPolicyController::class, 'add_policy'])->name('add.policy');
+    Route::put('/edit_channel_policy',[ChannelPolicyController::class, 'edit_policy'])->name('edit.policy');
+    Route::post('/add_policy_section',[ChannelPolicyController::class, 'add_section'])->name('add.section');
+   Route::put('/edit_policy_section/{id}',[ChannelPolicyController::class, 'edit_section'])->name('edit.section');
+   // Route::delete('/destroy_policy_section/{id}',[ChannelPolicyController::class, 'destroy_section'])->name('destroy.section');
+   Route::delete('/destroy_policy_section/{id}', [ChannelPolicyController::class, 'destroy_section'])->name('destroy.section');
+   // Route::delete('/destroy_policy_desc/{id}', [ChannelPolicyController::class, 'destroy_desc'])->name('destroy.desc');
+  // Route::delete('/destroy_policy_desc/{id}', [ChannelPolicyController::class, 'destroy_desc'])->name('destroy.desc');
+  Route::get('channelrequest', [FlaggedUserController::class, 'channelrequest']);
+  Route::get('managechannel', [FlaggedUserController::class, 'managechannel']);
+  Route::get('channeladmin', [FlaggedUserController::class, 'channeladmin']);
+  Route::get('channels/reason', [FlaggedUserController::class, 'reason']);
+  Route::get('channels/prefix', [FlaggedUserController::class, 'prefix']);
+  Route::get('channels/policy_terms', [FlaggedUserController::class, 'policy_terms']);
+
+
+//Channel Reasons 
+Route::post('/add_channel_reason',[ChannelReasonController::class, 'add_reason'])->name('add.reason');
+Route::put('/edit_channel_reason/{id}',[ChannelReasonController::class, 'edit_reason'])->name('edit.reason');
+Route::delete('/destory_reason/{id}',[ChannelReasonController::class, 'destroy_reason'])->name('destroy.reason');
+
+// CHANNELS
+ 
+Route::post('/add_channel_category', [ChannelCategoryController::class, 'add_channel_category'])->name('add.channel.category');
+Route::delete('/channels/{id}', [ChannelCategoryController::class, 'destroy_channel'])->name('channels.destroy');
+Route::post('/edit_channel', [ChannelCategoryController::class, 'edit_channel'])->name('edit.category');
+Route::post('/add_channel_subcategory', [ChannelCategoryController::class, 'add_channel_subcategory'])->name('channel.subcategory');
+Route::put('/edit_channel_subcategory/{id}', [ChannelCategoryController::class, 'edit_channel_subcategory'])->name('edit.channel.subcat');
+Route::delete('/channels_subcategory/{id}', [ChannelCategoryController::class, 'destroy_channel_subcategory'])->name('channels.subcat.destroy');
+
+
+
+
+
+    
+    Route::post('/add_channel_category', [ChannelCategoryController::class, 'add_channel_category'])->name('add.channel.category');
+    Route::delete('/channels/{id}', [ChannelCategoryController::class, 'destroy_channel'])->name('channels.destroy');
+    Route::post('/edit_channel', [ChannelCategoryController::class, 'edit_channel'])->name('edit.category');
+    Route::post('/add_channel_subcategory', [ChannelCategoryController::class, 'add_channel_subcategory'])->name('channel.subcategory');
+    Route::put('/edit_channel_subcategory/{id}', [ChannelCategoryController::class, 'edit_channel_subcategory'])->name('edit.channel.subcat');
+    Route::delete('/channels_subcategory/{id}', [ChannelCategoryController::class, 'destroy_channel_subcategory'])->name('channels.subcat.destroy');
+    
+
+
+
 
     Route::resource('/news-category', NewsCategoryController::class);
 

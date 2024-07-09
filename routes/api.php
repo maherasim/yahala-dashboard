@@ -137,6 +137,8 @@ Route::post('/reset/password', [AuthController::class, 'reset'])->name('password
 Route::post('/reset', [AuthController::class, 'resetpassword'])->name('reset.complete');
 Route::post('/reset/resend', [AuthController::class, 'reset_resend'])->name('reset.resend');
 
+
+
 // Account Setting  Controller
 Route::post('/change-password', [AccountSettingController::class, 'change_password'])->name('change-password')->middleware('auth:sanctum');
 Route::post('/send-email-code', [AccountSettingController::class, 'send_email_code'])->name('send-email-code');

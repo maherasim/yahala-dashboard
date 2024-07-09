@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\MongoOrganization;
 use App\Models\Organization;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -16,11 +17,14 @@ class OrganizationController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $organizations = Organization::orderBy("updated_at", "DESC")->get();
-        return view("content.organizations.index", compact("organizations"));
+    public function index() {
+        $organizations = MongoOrganization::orderBy("updated_at", "DESC")->get();
+        return view("content.organizations.index", compact('organizations'));
     }
+    // public function index() {
+    //     $organizations = Organization::orderBy("updated_at", "DESC")->get();
+    //     return view("content.organizations.index", compact("organizations"));
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -42,11 +46,12 @@ class OrganizationController extends Controller
     {
         $validated = $request->validated();
 
-        // $imagePath = null;
-        // if ($request->hasFile('logo')) {
-        //     $imagePath = $request->logo->store("/organizations", "public");
-        //     $validated["logo"] = $imagePath;
-        // }
+        $imagePath = null;
+        if ($request->hasFile('logo')) {
+            $imagePath = $request->logo->store("/organizations", "public");
+            $validated["logo"] = $imagePath;
+        }
+        
 
         $organization = Organization::create($validated);
 

@@ -1,60 +1,126 @@
-<form id="editForm{{ $organization->id }}" action="{{ route('donations.organizations.update', $organization->id) }}" method="post" enctype="multipart/form-data">
+<form id="editForm{{ $organization->_id }}" action="{{ route('organization.update', $organization->_id) }}" method="post" enctype="multipart/form-data">
     @method('PUT')
     @csrf
     <div class="hidden-inputs">
-        <input type="hidden" name="logo" value="{{ $organization->logo }}" data-path="{{ $organization->logo }}">
+        <input type="hidden" name="logo" value="{{ $organization->files }}" data-path="{{ $organization->files }}">
     </div>
-    <input type="hidden" name="showEditFormModal{{ $organization->id }}" value="1">
+    <input type="hidden" name="showEditFormModal{{ $organization->_id }}" value="1">
     <div class="row">
         <div class="col-lg-12 mx-auto">
             <div class="row g-3">
-                <div class="col-md-12">
-                    <label class="form-label" for="inputName{{ $organization->id }}">Organization Name</label>
-                    <input type="text" id="inputName{{ $organization->id }}" name="name" class="form-control" value="{{ old('name')?? $organization->name }}" placeholder="Organization Name">
-                    @error('name')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                <div class="col-12 d-flex justify-content-center align-items-center">
+                    <div class="edit-logo-image logo-div-wrapper cursor-pointer position-relative rounded-circle">
+                        <div class="logo-preview-div">
+                            <img src="{{asset('storage/'. $organization->image)}}" alt="organization logo" class='w-100 h-100 object-fit-cover rounded-circle'>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0">
+                            <div class="logo-camera-cover d-flex justify-content-center align-items-center me-3 mb-1">
+                                <img src="{{ asset('assets/img/icons/donations/logo-camera.png') }}" alt="camera icon" style="width: 1.5vw;height:1.5vw;">
+                            </div>
+                        </div>
+                        <input type="file" name="image" id="" class="d-none logo_img">
+                    </div>
+                    @error('image')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="col-md-12">
-                    <label class="form-label" for="inputBankAccount{{ $organization->id }}">Bank Account</label>
-                    <input type="text" id="inputBankAccount{{ $organization->id }}" name="bank_account" class="form-control" value="{{ old('bank_account')?? $organization->bank_account }}" placeholder="Bank Account">
-                    @error('bank_account')
+                    {{-- <label class="form-label" for="inputName{{ $organization->_id }}">Organization Name</label> --}}
+                    <input type="text" id="inputName{{ $organization->_id }}" name="organization_name" class="form-control" value="{{ old('organization_name', $organization->organization_name) }}" placeholder="Organization Name">
+                    @error('organization_name')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
                 </div>
-                <div class="col-md-12">
-                    <label class="form-label" for="inputPaypalAccount{{ $organization->id }}">Paypal Account</label>
-                    <input type="text" id="inputPaypalAccount{{ $organization->id }}" name="paypal_account" class="form-control" value="{{ old('paypal_account')?? $organization->paypal_account }}" placeholder="Paypal Account">
-                    @error('paypal_account')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
+                <!-- Owner Details Inputs -->
+                <div class="col-md-12 bg-custom-gray rounded py-2">
+                    <label class="form-label fs-5 text-capitalize" for="inputBankAccount">Owner Details</label>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <input type="text" name="first_name" class="form-control" placeholder="Owner Name" value="{{old('first_name', $organization->first_name)}}" required>
+                            @error('first_name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-3">
+                            <input type="text" name="last_name" class="form-control" value="{{old('last_name', $organization->last_name)}}" placeholder="Owner Last Name" required>
+                            @error('last_name')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-3">
+                            <select name="gender" class="form-select" required>
+                                <option value="" disabled {{ $organization->gender ? '' : 'selected' }}>Select Gender</option>
+                                <option value="male" {{ $organization->gender == 'male' ? 'selected' : '' }}>Male</option>
+                                <option value="female" {{ $organization->gender == 'female' ? 'selected' : '' }}>Female</option>
+                                <option value="others" {{ $organization->gender == 'others' ? 'selected' : '' }}>Others</option>
+                            </select>
+                            @error('gender')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-12">
-                    <label class="form-label" for="inputAddress{{ $organization->id }}">Address</label>
-                    <input type="text" id="inputAddress{{ $organization->id }}" name="address" class="form-control" value="{{ old('address')?? $organization->address }}" placeholder="Address">
-                    @error('address')
-                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
+
+                <!-- Location Info Inputs -->
+                <div class="col-md-12 bg-custom-gray rounded py-2">
+                    <label class="form-label fs-5 text-capitalize" for="inputBankAccount">Location Info</label>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <input type="text" name="country" class="form-control" value="{{old('country', $organization->country)}}" placeholder="Country" required>
+                            @error('country')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-3">
+                            <input type="text" name="city" class="form-control" value="{{old('city', $organization->city)}}" placeholder="City" required>
+                            @error('city')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-3">
+                            <textarea name="address" class="form-control" style="resize: none;" required>{{ old('address', $organization->address) }}</textarea>
+                            @error('address')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
-                <div class="col-12">
-                    <div class="card">
-                        <h5 class="card-header">Upload Logo</h5>
-                        <div class="card-body">
-                            <div class="dropzone needsclick" action="/" id="dropzone-logo{{ $organization->id }}">
-                                <div class="dz-message needsclick">
-                                    Drop files here or click to upload
-                                </div>
-                                <div class="fallback">
-                                    <input type="file" name="logo"  id="logo" accept="image/png, image/gif, image/jpeg" />
-                                </div>
+                
+                <!-- Contact Info Inputs -->
+                <div class="col-md-12 bg-custom-gray rounded py-2">
+                    <label class="form-label fs-5 text-capitalize" for="inputBankAccount">Contact Info</label>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <input type="text" name="phone_no" class="form-control" value="{{ old('phone_no', $organization->phone_no) }}" placeholder="Phone No" required>
+                            @error('phone_no')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-6 mb-3">
+                            <input type="text" name="email" value="{{ old('email', $organization->email) }}" class="form-control" placeholder="E-Mail" required>
+                            @error('email')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 bg-custom-grey rounded-3 py-2">
+                    <h5 class="card-header">Upload Files</h5>
+                    <div class="card-body">
+                        <div class="dropzone needsclick" action="/" id="dropzone-logo{{ $organization->_id }}">
+                            <div class="dz-message needsclick">
+                                PDF, PNG or JPG
+                            </div>
+                            <div class="fallback">
+                                <input type="file" name="logo"  id="logo" accept="application/pdf, image/png, image/gif, image/jpeg" />
                             </div>
                         </div>
                     </div>
                 </div>
             {{--
                 <div class="col-md-12">
-                    <label class="form-label" for="logoInput{{ $organization->id }}">Upload Logo</label>
-                    <input type="file" name="logo" id="logoInput{{ $organization->id }}" class="form-control">
+                    <label class="form-label" for="logoInput{{ $organization->_id }}">Upload Logo</label>
+                    <input type="file" name="logo" id="logoInput{{ $organization->_id }}" class="form-control">
                     @error('logo')
                     <div class="invalid-feedback d-block">{{ $message }}</div>
                     @enderror
@@ -86,13 +152,13 @@
                                                             </div>
                                                         </div>
                                                         <div class="dz-filename" data-dz-name></div>
-                                                            <div class="dz-size" data-dz-size></div>
+                                                        <div class="dz-size" data-dz-size></div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>`;
 
-        const dropzoneMulti = new Dropzone('#dropzone-logo{{ $organization->id }}', {
+        const dropzoneMulti = new Dropzone('#dropzone-logo{{ $organization->_id }}', {
             url: '{{ route('file.upload') }}',
             previewTemplate: previewTemplate,
             parallelUploads: 1,
@@ -117,17 +183,21 @@
 
             },
             removedfile: function(file) {
-                const hiddenInputsContainer = file.previewElement.closest('form').querySelector(
-                    '.hidden-inputs');
-                hiddenInputsContainer.querySelector(
-                    `input[data-path="${file.previewElement.dataset.path}"]`).remove();
+                const hiddenInputsContainer = file.previewElement.closest('form').querySelector('.hidden-inputs');
+                const hiddenInput = hiddenInputsContainer.querySelector(`input[data-path="${file.previewElement.dataset.path}"]`);
+    
+                if (hiddenInput) {
+                    hiddenInput.remove();
+                } else {
+                    console.log("not ok");
+                }
 
                 if (file.previewElement != null && file.previewElement.parentNode != null) {
                     file.previewElement.parentNode.removeChild(file.previewElement);
                 }
 
                 $.ajax({
-                    url: '{{ route('donations.organizations.delete-logo', $organization->id) }}',
+                    url: '{{ route('donations.organizations.delete-logo', $organization->_id) }}',
                     method: 'delete',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -142,10 +212,10 @@
             }
         });
 
-        @if ($organization->logo)
+        @if ($organization->image)
         window.addEventListener('load', () => {
-            var path = "{{ asset('storage/' . $organization->logo) }}";
-            var rpath = "{{ $organization->logo }}";
+            var path = "{{ asset('storage/' . $organization->image) }}";
+            var rpath = "{{ $organization->image }}";
             const parts = rpath.split("___");
 
             imageUrlToFile(path,parts).then((file) => {

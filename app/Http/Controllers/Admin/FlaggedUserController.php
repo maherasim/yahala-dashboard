@@ -5,8 +5,19 @@ namespace App\Http\Controllers\Admin;
 use App\Models\FlaggedUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Event;
+use App\Models\Category;
+
+use App\Models\Music;
+use App\Models\Artist;
+use App\Models\MusicCategory;
+
 use App\Http\Requests\StoreFlaggedUserRequest;
 use App\Http\Requests\UpdateFlaggedUserRequest;
+use App\Models\Channel;
+use App\Models\ChannelPolicy;
+use App\Models\ChannelReason;
+use App\Models\PolicySection;
 
 class FlaggedUserController extends Controller
 {
@@ -31,12 +42,12 @@ class FlaggedUserController extends Controller
                     break;
             }
         }
-
+            
         $flaggedUsers = FlaggedUser::where("status", $status)->orderBy("updated_at", "DESC")->get();
         return view("content.flagged_users.index", compact("flaggedUsers", "status"));
     }
-
-    public function flaggedfanpage()
+    
+     public function flaggedfanpage()
     {
         $status = 1;
         if (request()->status !== null) {
@@ -52,7 +63,7 @@ class FlaggedUserController extends Controller
                     break;
             }
         }
-
+            
         $flaggedUsers = FlaggedUser::where("status", $status)->orderBy("updated_at", "DESC")->get();
         return view("content.flagged_users.fanpage", compact("flaggedUsers", "status"));
     }
@@ -136,4 +147,62 @@ class FlaggedUserController extends Controller
 
         return back()->with("success", "Flagged  user successfully deleted.");
     }
+	
+	public function channelrequest(){
+		  $view = 'daily';
+        if (request()->view) {
+          $view = request()->view;
+        }
+        $events = Event::orderBy("updated_at", "desc")->get();
+        $categories = Category::where('target', 'event')->where('status', 1)->get();
+	  return view("content.flagged_users.channelrequest", compact("events", "categories","view"));
+	}
+	public function managechannel(){
+		  $view = 'daily';
+        if (request()->view) {
+          $view = request()->view;
+        }
+        $events = Event::orderBy("updated_at", "desc")->get();
+        $categories = Category::where('target', 'event')->where('status', 1)->get();
+	  return view("content.flagged_users.managechannel", compact("events", "categories","view"));
+	}
+	public function channeladmin(){
+	  return view("content.flagged_users.channeladmin");
+	}
+	public function reason(){
+        $reasons = ChannelReason::get();
+	  return view("content.flagged_users.reason",compact('reasons'));
+	}
+	public function prefix(){
+	  return view("content.flagged_users.prefix");
+	}
+
+    public function policy_terms(){
+        $sections = PolicySection::get();
+        $policies = ChannelPolicy::get()->keyBy('section_id');
+        return view("content.flagged_users.policy_terms", compact('sections', 'policies'));
+    }
+
+	public function managecategories(Request $request){
+		$type  = $request->segments()[0];
+        $music  = Music::where('type',$type)->with('music_category')->get();
+        $music_category  = MusicCategory::get();
+        $artists = Artist::get();
+        
+        /* new code line */
+        $channels = Channel::with('subcategories')->get();
+        // dd($channels);
+		return view("content.flagged_users.addmanagechannel" , compact('music' , 'music_category' , 'artists' , 'type', 'channels'));
+	}
+    
+	// public function addmanagechannel(Request $request){
+	// 	$type  = $request->segments()[0];
+    //     $music  = Music::where('type',$type)->with('music_category')->get();
+    //     $music_category  = MusicCategory::get();
+    //     $artists = Artist::get();
+
+	// 	return view("content.flagged_users.addmanagechannel" , compact('music' , 'music_category' , 'artists' , 'type'));
+	// }
+	
+	
 }
