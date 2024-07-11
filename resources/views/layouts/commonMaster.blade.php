@@ -51,7 +51,7 @@
     // Inactivity Timer Script
     let inactivityTime = function () {
       let time;
-      let maxInactivity = 10 * 60 * 1000; // 10 minute for testing
+      let maxInactivity = 20 * 60 * 1000; // 30 seconds
 
       window.onload = resetTimer;
       document.onmousemove = resetTimer;
@@ -99,16 +99,16 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-primary" onclick="stayLoggedIn()">Stay Online</button>
-          <button type="button" class="btn btn-secondary" onclick="submitLogoutForm()">Logout</button>
+          <a class="btn btn-secondary" href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            Logout
+          </a>
+          <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" class="d-none">
+            @csrf
+          </form>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Logout Form -->
-  <form method="POST" id="logout-form" action="{{ route('admin.logout') }}" style="display: none;">
-    @csrf
-  </form>
 
 </body>
 </html>

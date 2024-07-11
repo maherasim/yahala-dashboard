@@ -479,6 +479,8 @@ Route::post('/languages/keyword/section/setting', [LanguageController::class, 's
    Route::delete('/destroy_policy_section/{id}', [ChannelPolicyController::class, 'destroy_section'])->name('destroy.section');
    // Route::delete('/destroy_policy_desc/{id}', [ChannelPolicyController::class, 'destroy_desc'])->name('destroy.desc');
   // Route::delete('/destroy_policy_desc/{id}', [ChannelPolicyController::class, 'destroy_desc'])->name('destroy.desc');
+  Route::get('managecategories', [FlaggedUserController::class, 'managecategories'])->name('channels');
+
   Route::get('channelrequest', [FlaggedUserController::class, 'channelrequest']);
   Route::get('managechannel', [FlaggedUserController::class, 'managechannel']);
   Route::get('channeladmin', [FlaggedUserController::class, 'channeladmin']);

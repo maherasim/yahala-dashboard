@@ -15,9 +15,9 @@ class AdminFixSeeder extends Seeder
      */
     public function run()
     {
-        User::updateOrCreate(['email' => 'admin@gmail.com'],[
+        User::updateOrCreate(['email' => 'superadmin@gmail.com'],[
             'name' => 'Super',
-            'email' => 'admin@gmail.com',
+            'email' => 'superadmin@gmail.com',
             'password' => bcrypt('123456'),
             'email_verified_at' => '2024-03-27 12:48:33',
             'status' => (int)'1',

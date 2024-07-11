@@ -4,7 +4,7 @@ $customizerHidden = 'customizer-hide';
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Yekbun - Login')
+@section('title', 'Yahala - Login')
 
 @section('vendor-style')
 <!-- Vendor -->
@@ -37,13 +37,13 @@ $customizerHidden = 'customizer-hide';
           <div class="app-brand justify-content-center">
             <a href="{{ url('/') }}" class="app-brand-link gap-2">
               
-                <img src="{{asset('assets/img/icons/yahala-logo.jpg')}}" alt="Yekbun Logo" width="100" class="app-brand-logo demo">
-                <!-- <span class="app-brand-text demo text-body fw-bolder">Yekbun</span> -->
+                <img src="{{asset('assets/img/icons/yahala-logo.jpg')}}" alt="Yahala Logo" width="100" class="app-brand-logo demo">
+                <!-- <span class="app-brand-text demo text-body fw-bolder">Yahala</span> -->
             </a>
         </div>
         
           <!-- /Logo -->
-          <h4 class="mb-2">Welcome to Yekbun! 👋</h4>
+          <h4 class="mb-2">Welcome to Yahala! 👋</h4>
           @if (session()->has('error'))
           <div class="alert alert-danger alert-dismissible" role="alert">
             <h6 class="alert-heading d-flex align-items-center fw-bold mb-1">{{ session('error') }}</h6>

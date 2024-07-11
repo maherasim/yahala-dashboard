@@ -28,9 +28,9 @@ class UserRolePermissionSeeder extends Seeder
       $adminRole->givePermissionTo($viewUsersPermission);
       $viewUsersPermission->assignRole($adminRole);
       // Create a user and assign role
-      $user = User::updateOrCreate(['email' => 'admin@gmail.com'],[
+      $user = User::updateOrCreate(['email' => 'superadmin@gmail.com'],[
         'name' => 'Super Admin',
-        'email' => 'admin@gmail.com',
+        'email' => 'superadmin@gmail.com',
         'password' => Hash::make('123456'),
         'is_admin_user' => 1,
         'is_superadmin' => 1,
