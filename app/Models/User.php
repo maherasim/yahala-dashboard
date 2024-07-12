@@ -44,5 +44,10 @@
      protected $casts = [
          'email_verified_at' => 'datetime',
      ];
+     public function actions()
+     {
+         // Example assuming you have a related model like UserAction
+         return $this->hasMany(UserAction::class);
+     }
  }
  
