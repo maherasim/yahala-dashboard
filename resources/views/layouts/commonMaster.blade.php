@@ -51,7 +51,7 @@
     // Inactivity Timer Script
     let inactivityTime = function () {
       let time;
-      let maxInactivity = 20 * 60 * 1000; // 30 seconds
+      let maxInactivity = 0.10 * 60 * 1000; // 30 seconds
 
       window.onload = resetTimer;
       document.onmousemove = resetTimer;
@@ -78,6 +78,7 @@
       console.log("Stay logged in clicked.");
       $('#inactivityModal').modal('hide');
       inactivityTime();
+      location.reload();
     }
 
     function submitLogoutForm() {
